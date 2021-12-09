@@ -75,6 +75,15 @@ class PostOrderTraverse
                 std::cout << node->getValue();
             }           
         }
+        void printWithParenthesis(BinaryTreeNode<HoldedValues>* node) {
+            if(node != nullptr) {             
+                std::cout << "(";   
+                this->printWithParenthesis(node->getLeftChild());
+                this->printWithParenthesis(node->getRightChild());
+                std::cout << node->getValue();
+                std::cout << ")";
+            }     
+        }
 };
 
 template<typename HoldedValues, template<typename> class TraversePolicy>
@@ -154,7 +163,7 @@ class BinaryHeap: public TraversePolicy<HoldedValues> {
 };
 
 int main() {
-    const char* kopce= "WandaKrakKosciuszkiPilsudski";
+    const char* kopce= "WandaKrakKosciuszkoPilsudski";
     BinaryHeap<char, PreOrderTraverse> kopcePreOrderedHeap(const_cast<char*>(kopce), strlen(kopce));
     std::cout << "PREORDER" << std::endl;
     kopcePreOrderedHeap.print();
@@ -164,6 +173,7 @@ int main() {
     BinaryHeap<char, PostOrderTraverse> kopcePostOrder(const_cast<char*>(kopce), strlen(kopce));
     std::cout << "POSTORDER" << std::endl;
     kopcePostOrder.print();
+    kopcePostOrder.parenthesize();
     std::cout << "heapified" << std::endl;
     kopcePostOrder.heapifyValues();
     kopcePostOrder.print();
