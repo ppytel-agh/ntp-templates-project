@@ -84,7 +84,6 @@ class BinaryHeap: public TraversePolicy<HoldedValues> {
             for(int i = 0; i <this->numberOfElements; i++) {
                 this->originalValues[i] = valuesToHeapify[i];
             }            
-            this->heapifyValues();
             this->buildTree();
         }
         ~BinaryHeap() {
@@ -99,12 +98,13 @@ class BinaryHeap: public TraversePolicy<HoldedValues> {
             this->printWithParenthesis(this->root);
             std::cout << std::endl;
         }    
-    private:
         void heapifyValues() {
             for(int i = this->numberOfElements; i >= 1; i--) {
                 this->heapifyAt(i);
             }
+            this->buildTree();
         }
+    private:        
         void heapifyAt(int index) {
             int largest = index;
             int leftChildIndex = 2*index;
@@ -156,10 +156,23 @@ class BinaryHeap: public TraversePolicy<HoldedValues> {
 int main() {
     const char* kopce= "WandaKrakKosciuszkiPilsudski";
     BinaryHeap<char, PreOrderTraverse> kopcePreOrderedHeap(const_cast<char*>(kopce), strlen(kopce));
+    std::cout << "PREORDER" << std::endl;
+    kopcePreOrderedHeap.print();
+    std::cout << "heapified" << std::endl;
+    kopcePreOrderedHeap.heapifyValues();
     kopcePreOrderedHeap.print();
     BinaryHeap<char, PostOrderTraverse> kopcePostOrder(const_cast<char*>(kopce), strlen(kopce));
+    std::cout << "POSTORDER" << std::endl;
+    kopcePostOrder.print();
+    std::cout << "heapified" << std::endl;
+    kopcePostOrder.heapifyValues();
     kopcePostOrder.print();
     BinaryHeap<char, InOrderTraverse> kopceInOrder(const_cast<char*>(kopce), strlen(kopce));
+    std::cout << "INORDER" << std::endl;
+    kopceInOrder.print();
+    kopceInOrder.parenthesize();
+    std::cout << "heapified" << std::endl;
+    kopceInOrder.heapifyValues();
     kopceInOrder.print();
     kopceInOrder.parenthesize();
 }
