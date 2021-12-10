@@ -192,22 +192,38 @@ class BinaryHeap: public TraversePolicy<HoldedValues> {
         int numberOfElements;
 };
 
-// template<typename HoldedValue>
-// printArrayAsBinaryTree(HoldedValue* arr, int size) {
-//     int rows = ceil(log2(size));
-//     int nextRowSize = 1;
-//     int rowSizesSum = 1;
-//     for(int i = 0; i < size; i++) {
+template<typename HoldedValue>
+void printConnectionsRecursively(HoldedValue* arr, int size, int no) {
+    if(no <= size) {
+        int leftNodeNo = 2*no;
+        if(leftNodeNo <= size) {
+            std::cout << "\t" << no << " -> " << leftNodeNo << ";" << std::endl;            
+        }
+        int rightNodeNo = leftNodeNo + 1;
+        if(rightNodeNo <= size) {
+            std::cout << "\t" << no << " -> " << rightNodeNo << ";" << std::endl;            
+        }        
+        printConnectionsRecursively(arr, size, leftNodeNo);
+        printConnectionsRecursively(arr, size, rightNodeNo);
+    }
+}
 
-//         if(i+1 == rowSizesSum) {
-//             nextRowSize *= 2;
-//             rowSizesSum += nextRowSize;
-//         }
-//     }
-// }
+template<typename HoldedValue>
+void printArrayAsBinaryTree(HoldedValue* arr, int size) {
+    std::cout << "digraph btree {" << std::endl;
+    for(int i = 0; i < size; i++) {
+        std::cout << "\t" << (i+1) << " [label=\"";
+        //std::cout << (i+1) << ": ";
+        std::cout << arr[i] << "\"];" << std::endl;
+    }
+    printConnectionsRecursively(arr, size, 1);
+    std::cout << "}" << std::endl;
+}
 
 int main() {
     const char* kopce= "WandaKrakKosciuszkoPilsudski";
+    int kopceLen = strlen(kopce);
+    printArrayAsBinaryTree(kopce, kopceLen);
     // BinaryHeap<char, PreOrderTraverse> kopcePreOrderedHeap(const_cast<char*>(kopce), strlen(kopce));
     // std::cout << "PREORDER" << std::endl;
     // kopcePreOrderedHeap.print();
