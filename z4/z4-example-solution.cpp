@@ -30,7 +30,7 @@ class BinaryTreeNode {
 };
 
 template <typename NodeValueType>
-BinaryTreeNode<NodeValueType> nodeFromArray(NodeValueType* arr, int size, int nodeNo) {
+BinaryTreeNode<NodeValueType>* nodeFromArray(NodeValueType* arr, int size, int nodeNo) {
     if(nodeNo <= size) {
         BinaryTreeNode<NodeValueType> *node = new BinaryTreeNode<NodeValueType>();
         node->setValue(arr[nodeNo - 1]);
@@ -45,14 +45,12 @@ BinaryTreeNode<NodeValueType> nodeFromArray(NodeValueType* arr, int size, int no
 template<typename NodeValueType>
 class BinaryTree {
     public:
-        BinaryTree<NodeValueType> fromArray(NodeValueType* arr, int size) {
-            return BinaryTree<NodeValueType>(nodeFromArray(arr, size, 1), size);
-        }
+        BinaryTree(NodeValueType* arr, int size): root(nodeFromArray(arr, size, 1)), size(size) {}
         ~BinaryTree() {
             this->destroyNode(this->root);
             this->root = nullptr;
         }
-        BinaryTreeNode<NodeValueType> getRoot() {
+        BinaryTreeNode<NodeValueType>* getRoot() {
             return this->root;
         }
     protected:
@@ -65,7 +63,7 @@ class BinaryTree {
             }        
         }
     private:
-        BinaryTree<NodeValueType>* root;
+        BinaryTreeNode<NodeValueType>* root;
         int size;
 };
 
@@ -234,31 +232,31 @@ class BinaryHeap {
 int main() {
     const char* kopce= "WandaKrakKosciuszkoPilsudski";
     int kopceLen = strlen(kopce);
-    printArrayAsGraphvizBinaryTree(kopce, kopceLen);
-    char* kopceHeap = heapify(const_cast<char*>(kopce), kopceLen);
-    printArrayAsGraphvizBinaryTree(kopceHeap, kopceLen);
-    delete[] kopceHeap;
-    kopceHeap = nullptr;
-    // BinaryHeap<char, PreOrderTraverse> kopcePreOrderedHeap(const_cast<char*>(kopce), strlen(kopce));
-    // std::cout << "PREORDER" << std::endl;
-    // kopcePreOrderedHeap.print();
-    // std::cout << "heapified" << std::endl;
-    // kopcePreOrderedHeap.heapifyValues();
-    // kopcePreOrderedHeap.print();
-    // BinaryHeap<char, PostOrderTraverse> kopcePostOrder(const_cast<char*>(kopce), strlen(kopce));
-    // std::cout << "POSTORDER" << std::endl;
-    // kopcePostOrder.print();
-    // kopcePostOrder.parenthesize();
-    // std::cout << "heapified" << std::endl;
-    // kopcePostOrder.heapifyValues();
-    // kopcePostOrder.print();
-    // BinaryHeap<char, InOrderTraverse> kopceInOrder(const_cast<char*>(kopce), strlen(kopce));
-    // std::cout << "INORDER" << std::endl;
-    // kopceInOrder.print();
-    // kopceInOrder.parenthesize();
-    // std::cout << "heapified" << std::endl;
-    // kopceInOrder.heapifyValues();
-    // kopceInOrder.print();
-    // kopceInOrder.parenthesize();
+    //printArrayAsGraphvizBinaryTree(kopce, kopceLen);
+    char* heapifiedKopce = heapify(const_cast<char*>(kopce), kopceLen);
+    //printArrayAsGraphvizBinaryTree(heapifiedKopce, kopceLen);
+    BinaryTreeTraverser<PreOrderTraverse> preOrderTraverser;
+    BinaryTreeTraverser<InOrderTraverse> InOrderTraverser;
+    BinaryTreeTraverser<PostOrderTraverse> postOrderTraverser;
+    BinaryTree<char> kopceTree(const_cast<char*>(kopce), kopceLen);
+    BinaryTree<char> kopceHeap(const_cast<char*>(heapifiedKopce), kopceLen);
+   
+    std::cout << "PREORDER" << std::endl;
+    preOrderTraverser.print(kopceTree);
+    std::cout << "heapified" << std::endl;
+    preOrderTraverser.print(kopceHeap);
+    std::cout << "POSTORDER" << std::endl;
+    postOrderTraverser.print(kopceTree);
+    postOrderTraverser.parenthesize(kopceTree);
+    std::cout << "heapified" << std::endl;
+    postOrderTraverser.print(kopceHeap);
+    std::cout << "INORDER" << std::endl;
+    InOrderTraverser.print(kopceTree);
+    InOrderTraverser.parenthesize(kopceTree);
+    std::cout << "heapified" << std::endl;
+    InOrderTraverser.print(kopceHeap);
+    InOrderTraverser.parenthesize(kopceHeap);
+    delete[] heapifiedKopce;
+    heapifiedKopce = nullptr;
     return 0;
 }
