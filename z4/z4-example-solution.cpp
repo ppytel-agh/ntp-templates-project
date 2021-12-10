@@ -178,55 +178,6 @@ HoldedValues* heapify(HoldedValues* values, int len) {
     return heapifiedValues;
 }
 
-template<typename HoldedValues>
-class BinaryHeap {
-    public:
-        BinaryHeap(HoldedValues *valuesToHeapify, int numberOfElements): originalValues(new HoldedValues[numberOfElements]), numberOfElements(numberOfElements) {
-            for(int i = 0; i <this->numberOfElements; i++) {
-                this->originalValues[i] = valuesToHeapify[i];
-            }
-            this.heapifyValues();            
-        }
-        ~BinaryHeap() {
-            delete[] this->originalValues;
-            this->destroyBinaryTree();            
-        }
-        HoldedValues* getValues() {
-            return this->originalValues;
-        }
-        int getSize() {
-            return this->numberOfElements;
-        }
-        
-    protected:    
-        void heapifyValues() {
-            for(int i = this->numberOfElements; i >= 1; i--) {
-                this->heapifyAt(i);
-            }
-            this->buildTree();
-        }     
-        void heapifyAt(int index) {
-            int largest = index;
-            int leftChildIndex = 2*index;
-            int rightChildIndex = leftChildIndex + 1;
-            if(leftChildIndex <= this->numberOfElements && this->originalValues[leftChildIndex - 1] > this->originalValues[largest - 1]) {
-                largest = leftChildIndex;
-            }
-            if(rightChildIndex <= this->numberOfElements && this->originalValues[rightChildIndex - 1] > this->originalValues[largest - 1]) {
-                largest = rightChildIndex;
-            }
-            if(largest != index) {
-                HoldedValues tmp = this->originalValues[largest - 1];
-                this->originalValues[largest - 1] = this->originalValues[index - 1];
-                this->originalValues[index -1] = tmp;
-                this->heapifyAt(largest);
-            }
-        }
-    private:
-        HoldedValues* originalValues;
-        int numberOfElements;
-};
-
 #include "graphviz-tree.hpp"
 
 int main() {
