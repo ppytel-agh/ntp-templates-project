@@ -143,8 +143,45 @@ class BinaryTreeTraverser: public TraversePolicy {
         }    
 };
 
-template<typename HoldedValues, template<typename> class TraversePolicy>
-class BinaryHeap: public TraversePolicy<HoldedValues> {
+template<typename HoldedValues>
+void heapifyAt(HoldedValues* values, int len, int no) {
+    int largest = no;    
+    int leftChildNo = 2*no;
+    int rightChildNo = leftChildNo + 1;
+    int currentElementIndex = no - 1;
+    int largestValueIndex = largest - 1;
+    int leftChildIndex = leftChildNo - 1;
+    int rightChildIndex = rightChildNo - 1;
+    if(leftChildNo <= len && (values[leftChildIndex] > values[largestValueIndex])) {        
+        largest = leftChildNo;
+        largestValueIndex = leftChildIndex;
+    }
+    if(rightChildNo <= len &&  (values[rightChildIndex] > values[largestValueIndex])) {
+        largest = rightChildNo;
+        largestValueIndex = rightChildIndex;
+    }
+    if(largest != no) {        
+        HoldedValues largestValue = values[largestValueIndex];
+        values[largestValueIndex] = values[currentElementIndex];
+        values[currentElementIndex] = largestValue;
+        heapifyAt(values, len, largest);
+    }   
+}
+
+template<typename HoldedValues>
+HoldedValues* heapify(HoldedValues* values, int len) {
+    HoldedValues* heapifiedValues = new HoldedValues[len];
+    for(int i = 0; i < len; i++) {
+        heapifiedValues[i] = values[i];
+    }
+    for(int no = len; no >= 1; no--) {
+        heapifyAt(heapifiedValues, len, no);
+    }
+    return heapifiedValues;
+}
+
+template<typename HoldedValues>
+class BinaryHeap {
     public:
         BinaryHeap(HoldedValues *valuesToHeapify, int numberOfElements): originalValues(new HoldedValues[numberOfElements]), numberOfElements(numberOfElements) {
             for(int i = 0; i <this->numberOfElements; i++) {
@@ -192,38 +229,16 @@ class BinaryHeap: public TraversePolicy<HoldedValues> {
         int numberOfElements;
 };
 
-template<typename HoldedValue>
-void printConnectionsRecursively(HoldedValue* arr, int size, int no) {
-    if(no <= size) {
-        int leftNodeNo = 2*no;
-        if(leftNodeNo <= size) {
-            std::cout << "\t" << no << " -> " << leftNodeNo << ";" << std::endl;            
-        }
-        int rightNodeNo = leftNodeNo + 1;
-        if(rightNodeNo <= size) {
-            std::cout << "\t" << no << " -> " << rightNodeNo << ";" << std::endl;            
-        }        
-        printConnectionsRecursively(arr, size, leftNodeNo);
-        printConnectionsRecursively(arr, size, rightNodeNo);
-    }
-}
-
-template<typename HoldedValue>
-void printArrayAsBinaryTree(HoldedValue* arr, int size) {
-    std::cout << "digraph btree {" << std::endl;
-    for(int i = 0; i < size; i++) {
-        std::cout << "\t" << (i+1) << " [label=\"";
-        //std::cout << (i+1) << ": ";
-        std::cout << arr[i] << "\"];" << std::endl;
-    }
-    printConnectionsRecursively(arr, size, 1);
-    std::cout << "}" << std::endl;
-}
+#include "graphviz-tree.hpp"
 
 int main() {
     const char* kopce= "WandaKrakKosciuszkoPilsudski";
     int kopceLen = strlen(kopce);
-    printArrayAsBinaryTree(kopce, kopceLen);
+    printArrayAsGraphvizBinaryTree(kopce, kopceLen);
+    char* kopceHeap = heapify(const_cast<char*>(kopce), kopceLen);
+    printArrayAsGraphvizBinaryTree(kopceHeap, kopceLen);
+    delete[] kopceHeap;
+    kopceHeap = nullptr;
     // BinaryHeap<char, PreOrderTraverse> kopcePreOrderedHeap(const_cast<char*>(kopce), strlen(kopce));
     // std::cout << "PREORDER" << std::endl;
     // kopcePreOrderedHeap.print();
@@ -245,4 +260,5 @@ int main() {
     // kopceInOrder.heapifyValues();
     // kopceInOrder.print();
     // kopceInOrder.parenthesize();
+    return 0;
 }
