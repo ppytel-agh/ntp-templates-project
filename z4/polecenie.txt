@@ -1,0 +1,44 @@
+Napisz szablon klasy drzewa binarnego, przechowującego w swoich węzłach wartości dowolnego typu.
+Napisz szablon klasy do trawersowania drzew binarnych, dla której sposób trawersowania drzewa jest w postaci wytycznej.
+Stwórz rodzinę klasy wytycznych sposobó trawersowania: preorder, inorder, postorder, przeszukiwanie wszerz.
+Klasa trawersowania drzew powinna udostępniać metodę do opisywania wartości węzłów poddrzew w nawiasy.
+Który sposób trawersowania umożliwia zrealizowanie tego algorytmu?
+Napisz szablon funkcji tworzącej tablicę kopca typu max, dla podanej tablicy wartości.
+Z podanego ciągu znaków stwórz kopiec i ustal, dla jakich sposobów trawersowania można znaleźć podane podciągi znaków.
+
+Ciąg do kopcowania:
+WandaKrakKosciuszkoPilsudski
+
+Podciągi do znalezienia:
+Wisla
+odaPolski
+Kloss
+zodiakPlacki
+
+Dane jest drzewo binarne operacji matematycznych, z pomocą odpowiedniej klasy trawersowania wypisz działania otoczone nawiasami i podaj jego wynik.
+
+https://dreampuf.github.io/GraphvizOnline - wizualizacja drzewa online
+digraph btree {
+ a [label="2"]
+ b [label="*"]
+ c [label="2"]
+ d [label="+"]
+ e [label="2"]
+ f [label="*"]
+ g [label="7"]
+ h [label="*"]
+ i [label="3"]
+ j [label="+"]
+ k [label="5"]
+ 
+ b -> a
+ b -> f
+ f -> d
+ f -> h
+ d -> c
+ d -> e
+ h -> g
+ h -> j
+ j -> i
+ j -> k
+}

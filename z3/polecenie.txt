@@ -1,0 +1,2 @@
+Napisz szablon tworzący strukturę trójkąta Pascala, dla n-tego wiersza i m-tej kolumny.
+Struktura powinna zawierać informację o tym, czy podane współrzędne są poprawne oraz jaka wartość znajduje się pod daną współrzędną.

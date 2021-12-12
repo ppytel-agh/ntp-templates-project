@@ -1,0 +1,36 @@
+INORDER
+adaoWkksPiKsloazKndscskuiiur
+PREORDER
+zsodaakWksiPKolausnKdsckuiir
+POSTORDER
+aadWkkoPKilaossKdnckssiiruuz
+BREADTH
+zsuossudkionsiraaWkPKlaKdcki
+
+
+//((2)*((2+2)*(7*(3+5)))) = 448
+
+digraph btree {
+ a [label="2"]
+ b [label="*"]
+ c [label="2"]
+ d [label="+"]
+ e [label="2"]
+ f [label="*"]
+ g [label="7"]
+ h [label="*"]
+ i [label="3"]
+ j [label="+"]
+ k [label="5"]
+ 
+ b -> a
+ b -> f
+ f -> d
+ f -> h
+ d -> c
+ d -> e
+ h -> g
+ h -> j
+ j -> i
+ j -> k
+}

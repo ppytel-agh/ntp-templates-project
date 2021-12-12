@@ -126,6 +126,59 @@ class PostOrderTraverse
         }
 };
 
+class BreadthTraverse {
+    protected:
+        template<typename HoldedValues>
+        void printNode(BinaryTreeNode<HoldedValues>* node) {
+            if(node != nullptr) { 
+                int height = this->getTreeHeight(node);
+                for(int i = 0; i < height; i++) {
+                    this->printLevel(node, i);
+                }
+                
+            }           
+        }
+        template<typename HoldedValues>
+        int getTreeHeight(BinaryTreeNode<HoldedValues>* node) {
+            if(node->getLeftChild() == nullptr) {
+                return 1;
+            } else {
+                return 1 + this->getTreeHeight(node->getLeftChild());
+            }
+        }
+        template<typename HoldedValues>
+        void printLevel(BinaryTreeNode<HoldedValues>* node, int level) {
+            if(node != nullptr) {
+                if(level == 0) {
+                    std::cout << node->getValue();
+                } else {
+                    this->printLevel(node->getLeftChild(), level - 1);
+                    this->printLevel(node->getRightChild(), level - 1);
+                }
+            }
+        }
+        template<typename HoldedValues>
+        void lookForNextLetter(BinaryTreeNode<HoldedValues>* node, HoldedValues* phrase, int phraseLen, int nextLetterIndex) {
+            if(node != nullptr) { 
+                int height = this->getTreeHeight(node);
+                for(int i = 0; i < height; i++) {
+                    this->searchLevel(node, i, phrase, phraseLen, nextLetterIndex);
+                }                
+            }           
+        }
+        template<typename HoldedValues>
+        void searchLevel(BinaryTreeNode<HoldedValues>* node, int level, HoldedValues* phrase, int phraseLen, int nextLetterIndex) {
+            if(node != nullptr) {
+                if(level == 0) {
+                    std::cout << node->getValue();
+                } else {
+                    this->searchLevel(node->getLeftChild(), level - 1, phrase, phraseLen, nextLetterIndex);
+                    this->searchLevel(node->getRightChild(), level - 1, phrase, phraseLen, nextLetterIndex);
+                }
+            }
+        }
+};
+
 template<class TraversePolicy> 
 class BinaryTreeTraverser: public TraversePolicy {
     public: 
@@ -138,7 +191,11 @@ class BinaryTreeTraverser: public TraversePolicy {
         void parenthesize(BinaryTree<HoldedValues>& tree) {
             this->printWithParenthesis(tree.getRoot());
             std::cout << std::endl;
-        }    
+        }
+        template<typename HoldedValues>
+        void findPhrase(BinaryTree<HoldedValues>& tree, HoldedValues* phrase, int phraseLen) {
+            this->lookForNextLetter(tree, phrase, phraseLen, 0);
+        }
 };
 
 template<typename HoldedValues>
@@ -189,9 +246,9 @@ int main() {
     BinaryTreeTraverser<PreOrderTraverse> preOrderTraverser;
     BinaryTreeTraverser<InOrderTraverse> InOrderTraverser;
     BinaryTreeTraverser<PostOrderTraverse> postOrderTraverser;
+    BinaryTreeTraverser<BreadthTraverse> breadthTraverser;
     BinaryTree<char> kopceTree(const_cast<char*>(kopce), kopceLen);
-    BinaryTree<char> kopceHeap(const_cast<char*>(heapifiedKopce), kopceLen);
-   
+    BinaryTree<char> kopceHeap(const_cast<char*>(heapifiedKopce), kopceLen);   
     std::cout << "PREORDER" << std::endl;
     preOrderTraverser.print(kopceTree);
     std::cout << "heapified" << std::endl;
@@ -207,6 +264,11 @@ int main() {
     std::cout << "heapified" << std::endl;
     InOrderTraverser.print(kopceHeap);
     InOrderTraverser.parenthesize(kopceHeap);
+
+    const char* text = "she believed";
+    BinaryTree<char> textTree(const_cast<char*>(text), strlen(text));
+    breadthTraverser.print(textTree);
+
     delete[] heapifiedKopce;
     heapifiedKopce = nullptr;
     return 0;
