@@ -1,2 +1,4 @@
 Napisz szablon tworzący strukturę trójkąta Pascala, dla podanego wiersza i kolumny.
 Struktura powinna zawierać informację o tym, czy podane współrzędne są poprawne oraz jaka wartość znajduje się pod daną współrzędną.
+W funkcji main należy pokazać, że rozwiązanie działa. Najlepiej jeśli skorzysta się z własności trójkąta Pascala oraz tego, że wartości zostały obliczone na etapie kompilacji.
+Można dokonać wstępnej walidacji za pomocą załączonego testsuite. W głównej części kodu należy wywołać makro generujące szablony funkcji testujących pod swoje rozwiązanie, a w funkcji main należy wywołać szablin funkcji pascalsTriangleTestSuite skonkretyzowany napisaną klasą(strukturą).
