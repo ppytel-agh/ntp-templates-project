@@ -24,6 +24,7 @@ struct PascalsTriangle<1, 1> {
     static const int value = 1;
 };
 
+GENERATE_PASCALSTRIANGLE_TESTSTUITE_TEMPLATE_FUNCTION(valid, value, 1, 1)
 
 int main() {
     pascalsTriangleTestSuite<PascalsTriangle>();
